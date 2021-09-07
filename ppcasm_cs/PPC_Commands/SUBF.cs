@@ -9,10 +9,10 @@ namespace ppcasm_cs.PPC_Commands
         {
             UInt32 val = 0x7c000050;
             if (args.Length != 3)
-                throw new Exception("subf <float_reg>, <float_reg>, <float_reg>");
-            val += GetFloatRegister(args[0]) << 21;
-            val += GetFloatRegister(args[1]) << 16;
-            val += GetFloatRegister(args[2]) << 11;
+                throw new Exception("subf <int_reg>, <int_reg>, <int_reg>");
+            val += GetIntRegister(args[0]) << 21;
+            val += GetIntRegister(args[1]) << 16;
+            val += GetIntRegister(args[2]) << 11;
             this.value = BitConverter.GetBytes(val).Reverse().ToArray();
         }
 

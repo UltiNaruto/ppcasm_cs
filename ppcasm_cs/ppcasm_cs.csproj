@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PPC_Commands\ADDC.cs" />
+    <Compile Include="PPC_Commands\AND.cs" />
     <Compile Include="PPC_Commands\ANDIS.cs" />
     <Compile Include="PPC_Commands\ANDI.cs" />
     <Compile Include="PPC_Commands\ADDIC_DOT.cs" />
@@ -61,6 +62,8 @@
     <Compile Include="PPC_Commands\FDIVS.cs" />
     <Compile Include="PPC_Commands\FCMPU.cs" />
     <Compile Include="PPC_Commands\MFLR.cs" />
+    <Compile Include="PPC_Commands\MR.cs" />
+    <Compile Include="PPC_Commands\XOR.cs" />
     <Compile Include="PPC_Commands\RLWIMI_DOT.cs" />
     <Compile Include="PPC_Commands\RLWIMI.cs" />
     <Compile Include="PPC_Commands\RLWINM_DOT.cs" />

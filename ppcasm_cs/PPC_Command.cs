@@ -52,7 +52,9 @@ namespace ppcasm_cs
             Int32 value = Int32.MinValue;
             try
             {
-                if (arg.Contains("0x"))
+                if (arg.StartsWith("-0x"))
+                    value = Convert.ToInt32(arg.Substring(1), 16) * -1;
+                else if (arg.StartsWith("0x"))
                     value = Convert.ToInt32(arg, 16);
                 else
                     value = Convert.ToInt32(arg);
@@ -81,7 +83,7 @@ namespace ppcasm_cs
 
         protected bool IsIndexedRegister(String arg)
         {
-            String[] values = Regex.Split(arg, "^([-]?0x[0-9|a-f]{1,4})\\((r[1-2][0-9]|r[0-9]|r3[0-1])\\)$")
+            String[] values = Regex.Split(arg, "^([-]{0,1}0x[0-9|a-f]{1,4})\\((r[1-2][0-9]|r[0-9]|r3[0-1])\\)$")
                                    .Where(s => s != "")
                                    .ToArray();
             if (values == null || values.Length != 2)
@@ -134,15 +136,21 @@ namespace ppcasm_cs
                 return Convert.ToUInt32(arg);
         }
 
-        protected KeyValuePair<UInt32, UInt32> GetIndexedRegister(String arg)
+        protected KeyValuePair<Int32, UInt32> GetIndexedRegister(String arg)
         {
             if (!IsIndexedRegister(arg))
                 throw new Exception("GetIndexedRegister() has received an invalid input");
-            String[] values = Regex.Split(arg, "^([-]?0x[0-9|a-f]{1,4})\\(r([1-2][0-9]|[0-9]|3[0-1])\\)$")
+            String[] values = Regex.Split(arg, "^([-]{0,1}0x[0-9|a-f]{1,4})\\(r([1-2][0-9]|[0-9]|3[0-1])\\)$")
                                    .Where(s => s != "")
                                    .ToArray();
 
-            return new KeyValuePair<UInt32, UInt32>(Convert.ToUInt32(values[0], 16), Convert.ToUInt32(values[1]));
+            Int32 imm16 = Int32.MinValue;
+            if (values[0][0] == '-')
+                imm16 = Convert.ToInt32(values[0].Substring(1), 16) * -1;
+            else
+                imm16 = Convert.ToInt32(values[0], 16);
+
+            return new KeyValuePair<Int32, UInt32>(imm16, Convert.ToUInt32(values[1]));
         }
     }
 }

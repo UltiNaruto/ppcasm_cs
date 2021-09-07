@@ -10,7 +10,7 @@ namespace ppcasm_cs.PPC_Commands
             UInt32 val = 0x7c0803a6;
             if (args.Length != 1)
                 throw new Exception("mtlr <int_reg>");
-            val += GetFloatRegister(args[0]) << 21;
+            val += GetIntRegister(args[0]) << 21;
             this.value = BitConverter.GetBytes(val).Reverse().ToArray();
         }
 

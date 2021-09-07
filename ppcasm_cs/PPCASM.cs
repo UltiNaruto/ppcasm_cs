@@ -16,6 +16,7 @@ namespace ppcasm_cs
             { "addic", typeof(PPC_Commands.ADDIC) },
             { "addic.", typeof(PPC_Commands.ADDIC_DOT) },
             { "addis", typeof(PPC_Commands.ADDIS) },
+            { "and", typeof(PPC_Commands.AND) },
             { "andi", typeof(PPC_Commands.ANDI) },
             { "andis", typeof(PPC_Commands.ANDIS) },
             { "b", typeof(PPC_Commands.B) },
@@ -58,6 +59,7 @@ namespace ppcasm_cs
             { "lwzu", typeof(PPC_Commands.LWZU) },
             { "lwzx", typeof(PPC_Commands.LWZX) },
             { "mflr", typeof(PPC_Commands.MFLR) },
+            { "mr", typeof(PPC_Commands.MR) },
             { "mtlr", typeof(PPC_Commands.MTLR) },
             { "nop", typeof(PPC_Commands.NOP) },
             { "nor", typeof(PPC_Commands.NOR) },
@@ -84,6 +86,7 @@ namespace ppcasm_cs
             { "subfic", typeof(PPC_Commands.SUBFIC) },
             { "subi", typeof(PPC_Commands.SUBI) },
             { "subis", typeof(PPC_Commands.SUBIS) },
+            { "xor", typeof(PPC_Commands.XOR) },
             { "xori", typeof(PPC_Commands.XORI) },
             { "xoris", typeof(PPC_Commands.XORIS) },
             // data types
@@ -122,7 +125,13 @@ namespace ppcasm_cs
                 else
                 {
                     command = trimmed_instruction.Substring(0, space_index);
-                    args = trimmed_instruction.Substring(space_index, trimmed_instruction.Length - space_index)
+                    if(dict_instructions[command].BaseType == typeof(PPC_DataType))
+                        args = trimmed_instruction.Substring(space_index, trimmed_instruction.Length - space_index)
+                          .Split(',')
+                          .Select(s => s.Trim())
+                          .ToArray();
+                    else
+                        args = trimmed_instruction.Substring(space_index, trimmed_instruction.Length - space_index)
                           .Split(',')
                           .Select(s => s.Trim().ToLower())
                           .ToArray();
@@ -132,7 +141,7 @@ namespace ppcasm_cs
     
                 command = "";
                 args = null;
-                addr += 4;
+                addr += (UInt32)compiled_instructions.Last().Value.Length;
             }
 
             return compiled_instructions.ToArray();
