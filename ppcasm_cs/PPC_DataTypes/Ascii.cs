@@ -15,8 +15,6 @@ namespace ppcasm_cs.PPC_DataTypes
              || args[0][args[0].Length - 1] != '"')
                 throw new Exception(".ascii \"<ascii_str>\"");
             str_as_bytes.AddRange(Encoding.ASCII.GetBytes(args[0].Substring(1, args[0].Length - 2)));
-            while (str_as_bytes.Count % 4 != 0)
-                str_as_bytes.Add(0);
             this.value = str_as_bytes.ToArray();
         }
 
