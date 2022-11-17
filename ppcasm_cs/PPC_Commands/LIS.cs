@@ -10,8 +10,8 @@ namespace ppcasm_cs.PPC_Commands
             UInt32 val = 0x3c000000;
             if (args.Length != 2)
                 throw new Exception("lis <int_reg>, <imm16>");
-            val += GetIntRegister(args[0]) << 21;
-            val += GetUnsignedImm(args[1], 16);
+            val |= GetIntRegister(args[0]) << 21;
+            val |= GetUnsignedImm(args[1], 16);
             this.value = BitConverter.GetBytes(val).Reverse().ToArray();
         }
 

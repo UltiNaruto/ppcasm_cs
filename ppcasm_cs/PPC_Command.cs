@@ -136,7 +136,7 @@ namespace ppcasm_cs
                 return Convert.ToUInt32(arg);
         }
 
-        protected KeyValuePair<Int16, UInt32> GetIndexedRegister(String arg)
+        protected KeyValuePair<Int32, UInt32> GetIndexedRegister(String arg)
         {
             if (!IsIndexedRegister(arg))
                 throw new Exception("GetIndexedRegister() has received an invalid input");
@@ -144,16 +144,13 @@ namespace ppcasm_cs
                                    .Where(s => s != "")
                                    .ToArray();
 
-            Int16 imm16 = 0;
+            Int32 imm16 = Int32.MinValue;
             if (values[0][0] == '-')
-            {
-                imm16 = Convert.ToInt16(values[0].Substring(1), 16);
-                imm16 *= -1;
-            }
+                imm16 = Convert.ToInt32(values[0].Substring(1), 16) * -1;
             else
-                imm16 = Convert.ToInt16(values[0], 16);
+                imm16 = Convert.ToInt32(values[0], 16);
 
-            return new KeyValuePair<Int16, UInt32>(imm16, Convert.ToUInt32(values[1]));
+            return new KeyValuePair<Int32, UInt32>(imm16, Convert.ToUInt32(values[1]));
         }
     }
 }

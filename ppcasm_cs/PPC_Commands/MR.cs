@@ -9,10 +9,10 @@ namespace ppcasm_cs.PPC_Commands
         {
             UInt32 val = 0x7c000378;
             if (args.Length != 2)
-                throw new Exception("or <int_reg>, <int_reg>");
-            val += GetIntRegister(args[1]) << 21;
-            val += GetIntRegister(args[0]) << 16;
-            val += GetIntRegister(args[1]) << 11;
+                throw new Exception("mr <int_reg>, <int_reg>");
+            val |= GetIntRegister(args[1]) << 21;
+            val |= GetIntRegister(args[0]) << 16;
+            val |= GetIntRegister(args[1]) << 11;
             this.value = BitConverter.GetBytes(val).Reverse().ToArray();
         }
 

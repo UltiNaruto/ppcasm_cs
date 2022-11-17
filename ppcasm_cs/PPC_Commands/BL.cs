@@ -7,9 +7,9 @@ namespace ppcasm_cs.PPC_Commands
     {
         public BL(UInt32 curAddr, String[] args) : base(curAddr, args)
         {
-            UInt32 val = 0x48000001;
-            UInt32 dist_jump = 0;
-            UInt32 dest = 0;
+            long val = 0x48000001;
+            long dist_jump = 0;
+            long dest = 0;
             if (args.Length != 1)
                 throw new Exception("bl <addr>");
             dest = GetUnsignedImm(args[0], 32);
@@ -20,8 +20,11 @@ namespace ppcasm_cs.PPC_Commands
             dist_jump = dest - curAddr;
             if(dist_jump < -1 * Math.Pow(2, 23) || dist_jump > Math.Pow(2, 23) - 1)
                 throw new Exception("Distance of jump must be between -0x800000 and 0x7FFFFF");
-            val += dist_jump;
-            this.value = BitConverter.GetBytes(val).Reverse().ToArray();
+            if (dist_jump < 0)
+                val += ((1 << 26) - Math.Abs(dist_jump)) & ~(31 << 27);
+            else
+                val += dist_jump;
+            this.value = BitConverter.GetBytes((UInt32)val).Reverse().ToArray();
         }
 
         public override string Command => "bl";
